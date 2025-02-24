@@ -1,0 +1,52 @@
+version: '2'
+services:
+  db-mceasy:
+    container_name: db-mceasy
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    ports:
+      - "5432:5432"
+    volumes:
+      - odoo-db-mceasy-data:/var/lib/postgresql/data
+  
+  odoo-mceasy:
+    container_name: odoo-mceasy
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ODOO_SERVER=odoo-bin
+    depends_on:
+      - db-mceasy
+    ports:
+      - "8022:8069"
+    volumes:
+      - odoo-odoo_mceasy-data:/var/lib/odoo
+      - ./config_odoo:/etc/odoo
+      - ./mceasy_addons:/mnt/mceasy_addons
+    command: odoo --dev=reload
+
+  # odoo-mceasy-form:
+  #   container_name: odoo-mceasy-form
+  #   build: 
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - ODOO_SERVER=odoo-bin
+  #   depends_on:
+  #     - db-mceasy
+  #   ports:
+  #     - "8022:8069"
+  #   volumes:
+  #     - odoo-odoo_mceasy_form-data:/var/lib/odoo
+  #     - ./config_odoo_form:/etc/odoo
+  #     - ./mceasy_addons:/mnt/mceasy_addons
+  #   command: odoo --dev=reload
+
+volumes:
+  odoo-db-mceasy-data:
+  odoo-odoo_mceasy-data:
+  # odoo-odoo_mceasy_form-data:

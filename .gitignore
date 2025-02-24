@@ -1,0 +1,12 @@
+__pycache__
+.vscode/
+
+# compiled python files
+*.py[co]
+# emacs backup files
+*~
+*.pyc
+*.pyc*
+
+# temporary files
+tmp/
